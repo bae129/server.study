@@ -16,10 +16,16 @@ public class UserController {
         this.userService = userService;
     }
 
-    // 회원가입
+    // 회원가입 (예외 발생 시 원인 메시지 출력)
     @PostMapping("/register")
-    public ResponseEntity<Long> register(@RequestBody UserRegisterRequest request) {
-        return ResponseEntity.ok(userService.register(request));
+    public ResponseEntity<?> register(@RequestBody UserRegisterRequest request) {
+        try {
+            Long userId = userService.register(request);
+            return ResponseEntity.ok(userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("회원가입 실패 원인: " + e.getMessage() + " (" + e.getClass().getSimpleName() + ")");
+        }
     }
 
     // 회원 정보 조회

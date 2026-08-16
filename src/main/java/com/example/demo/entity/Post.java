@@ -16,21 +16,23 @@ public class Post {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
-    @Column(nullable = false)
-    private String author;
+    // Post(다) : User(일) 연관관계 매핑 (FK: user_id)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-    protected Post() {}
+    public Post() {}
 
-    public Post(String title, String content, String author) {
+    public Post(String title, String content, User user) {
         this.title = title;
         this.content = content;
-        this.author = author;
+        this.user = user;
     }
 
     public Long getId() { return id; }
     public String getTitle() { return title; }
     public String getContent() { return content; }
-    public String getAuthor() { return author; }
+    public User getUser() { return user; }
 
     public void update(String title, String content) {
         this.title = title;
